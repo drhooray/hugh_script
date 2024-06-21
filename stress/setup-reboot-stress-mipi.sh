@@ -57,6 +57,7 @@ count=$(cat $count_file)
 count_total=$(cat $count_file_total)
 count_error=$(cat $count_file_error)
 THE_ERR="switch camera to host failed"
+THE_ERR_OOT_VSC="ipu own camera failed"
 output_message=""
 #-1=detected
 #0 =do no
@@ -66,11 +67,12 @@ STRESS_BOOT_WAKEUP_DELAY=60
 
 # device=$(ip a | grep "$target_device")
 err_m=$(sudo dmesg | grep "$THE_ERR")
+err_m_oot_vsc=$(sudo dmesg | grep "$THE_ERR_OOT_VSC")
 err_vsc=$(sudo dmesg | grep "vsc" | grep "failed")
 if [ ! "$count" -gt 0 ]; then
         #Show Report and exit
 
-	if [ -n "$err_m" ]; then
+	if [ -n "$err_m" ] || [ -n "$err_m_oot_vsc" ]; then
                 count_error=$((count_error + 1))
 	fi
 
